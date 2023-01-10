@@ -172,12 +172,15 @@ WHERE b.id_personnage IS NULL
 
 -- 15
 -- Nom du/des personnages qui n'ont pas le droit de boire de la potion 'Magique'
+
 SELECT nom_personnage
 FROM personnage p
 LEFT JOIN autoriser_boire a ON  a.id_personnage = p.id_personnage
-WHERE p.id_personnage NOT IN 
+WHERE p.id_personnage  NOT IN 
 	(
 	SELECT id_personnage 
 	FROM autoriser_boire 
 	WHERE id_potion='1'
-    )
+	)
+GROUP BY nom_personnage
+ORDER BY nom_personnage 
