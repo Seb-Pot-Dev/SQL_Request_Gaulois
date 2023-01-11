@@ -190,11 +190,13 @@ ORDER BY nom_personnage
 
 -- A
 -- Ajoutez le personnage suivant : Champdeblix, agriculteur résidant à la ferme Hantassion de Rotomagus
+
 INSERT INTO personnage (nom_personnage, id_specialite, id_lieu, adresse_personnage)
 VALUES ('Champdeblix', 12, 6, 'Ferme Hantassion');
 
 -- A+
 -- Supprimer les doublons sur le nom_personnage dans la table personnage 
+
 -- On sélectionne les lignes à supprimer dans la table personnage
 DELETE p1
 FROM personnage p1
