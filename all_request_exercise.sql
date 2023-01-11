@@ -184,3 +184,72 @@ WHERE p.id_personnage  NOT IN
 	)
 GROUP BY nom_personnage
 ORDER BY nom_personnage 
+
+
+---------------------- EN ECRIVANT TOUJOURS DES REQUETES SQL, MODIFIEZ LA BASE DE DONNEES COMME SUIT : ---------------
+
+-- A
+-- Ajoutez le personnage suivant : Champdeblix, agriculteur résidant à la ferme Hantassion de Rotomagus
+INSERT INTO personnage (nom_personnage, id_specialite, id_lieu, adresse_personnage)
+VALUES ('Champdeblix', 12, 6, 'Ferme Hantassion');
+
+-- A+
+-- Supprimer les doublons sur le nom_personnage dans la table personnage 
+-- On sélectionne les lignes à supprimer dans la table personnage
+DELETE p1
+FROM personnage p1
+/* On crée une jointure avec la table personnage pour trouver les doublons 
+et on selectionne les lignes qui ont même nom_personnage et un id_personnage supérieur*/
+INNER JOIN personnage p2
+ON p1.nom_personnage = p2.nom_personnage AND p1.id_personnage > p2.id_personnage;
+
+
+-- B
+-- Autorisez Bonemine à boire de la potion magique, elle est jalouse d'Iélosubmarine
+
+--Ajouter une ligne dans table "autoriser_boire" avec ses colonnes tels que (id_personnage, id_potion)
+INSERT INTO autoriser_boire (id_personnage, id_potion)
+--Ligne possédant les valeurs ("12", "1") affecté aux colonnes tels que précisé précedemment
+VALUES ("12", "1")
+
+-- C
+-- Supprimez les casques grecs qui n'ont jamais été pris lors d'une bataille
+
+-- Supprimer dans la table casque
+DELETE FROM casque
+-- les casque avec id_type_casque = 2
+WHERE id_type_casque = 2 
+-- et dont l'id_casque n'est pas présent dans la table "prendre_casque", ce qui veut dire qu'ils n'ont pas été pris.
+AND id_casque NOT IN (SELECT id_casque FROM prendre_casque);
+
+-- D
+-- Modifiez l'adresse de Zérozérosix: il a été mis en prison à Condate.
+
+-- Modifier l'adresse pour "en prison"
+UPDATE personnage 
+SET adresse_personnage = 'En prison' 
+WHERE id_personnage = '23';
+-- Modifier le lieu pour "Condate"
+UPDATE personnage 
+SET id_lieu ='9' 
+WHERE id_personnage = '23';
+
+-- E
+-- La potion 'soupe' ne doit plus contenir de persil
+
+-- Supprimer dans la table composer
+DELETE FROM composer 
+-- les lignes avec id_potion = 9 (soupe)
+WHERE id_potion = 9 
+-- qui ont comme id_ingredient = 19 (persil)
+AND id_ingredient = 19
+
+-- F
+-- Obelix s'est trompé: ce sont 42 casque Weisenau, et non Ostrogoths, qu'il a pris lors de la bataille 'Attaque de la banque postale'. Corrigez son erreur.
+
+-- Modifier dans prendre_casque
+UPDATE prendre_casque 
+-- Définir la valeur de id_casque à '10'
+SET id_casque='10'
+-- Pour la bataille avec id_bataille = 9 (attaque de la banque postale)
+WHERE id_bataille='9' 
